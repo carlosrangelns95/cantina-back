@@ -31,12 +31,12 @@ export class ProfileEntity {
 
 
   // Muitos perfis pertencem a um usuário
-  @ManyToOne(() => UserEntity, (user) => user.profile, { cascade: true, nullable: false })
+  @ManyToOne(() => UserEntity, (user) => user.profile)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
 
   // um perfil pode pertencer a apenas um admin
-  @OneToOne(() => AdminEntity, (admin) => admin.profile)
+  @OneToOne(() => AdminEntity, (admin) => admin.profile, { cascade: true })
   admin: AdminEntity;
 }

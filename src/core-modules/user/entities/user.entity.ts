@@ -30,6 +30,6 @@ export class UserEntity {
 
 
   // um usuário pode ter vários perfis
-  @OneToMany(() => ProfileEntity, (profile) => profile.user)
+  @OneToMany(() => ProfileEntity, (profile) => profile.user, { cascade: true })
   profile: ProfileEntity[];
 }
