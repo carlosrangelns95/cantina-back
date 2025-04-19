@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConnectionModule } from "./connection/connection.module";
-import { UserModule } from "./user/user.module";
-import { ProfileModule } from "./profile/profile.module";
+import { UserModule } from "../core-modules/user/user.module";
+import { ProfileModule } from "../core-modules/profile/profile.module";
 
 @Module({
   imports: [

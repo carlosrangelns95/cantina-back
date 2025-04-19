@@ -2,13 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { SwaggerDocs } from '../swagger/swagger_docs.decorator';
-import { SWAGGER_CONFIG } from '../swagger/swagger.config';
+import { SwaggerDocs } from '../../core/swagger/swagger_docs.decorator';
+import { SWAGGER_CONFIG } from '../../core/swagger/swagger.config';
 import { ViewUserDto } from './dto/view-user.dto';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Post()
   @SwaggerDocs(SWAGGER_CONFIG.users.create)

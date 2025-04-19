@@ -1,7 +1,7 @@
-import { CreateProfileDto } from "../profile/dto/create-profile.dto";
-import { CreateUserDto } from "../user/dto/create-user.dto";
-import { UpdateUserDto } from "../user/dto/update-user.dto";
-import { ViewUserDto } from "../user/dto/view-user.dto";
+import { CreateProfileDto } from "../../core-modules/profile/dto/create-profile.dto";
+import { CreateUserDto } from "../../core-modules/user/dto/create-user.dto";
+import { UpdateUserDto } from "../../core-modules/user/dto/update-user.dto";
+import { ViewUserDto } from "../../core-modules/user/dto/view-user.dto";
 
 export const SWAGGER_CONFIG = {
 

@@ -1,5 +1,6 @@
-import { UserEntity } from "src/core/user/entities/user.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UserEntity } from "src/core-modules/user/entities/user.entity";
+import { AdminEntity } from "src/core-modules/admin/entities/admin.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum profileEnum {
   'USER' = 'user',
@@ -9,7 +10,7 @@ export enum profileEnum {
 
 @Entity('profiles')
 export class ProfileEntity {
-  
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -33,4 +34,9 @@ export class ProfileEntity {
   @ManyToOne(() => UserEntity, (user) => user.profile, { cascade: true, nullable: false })
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
+
+
+  // um perfil pode pertencer a apenas um admin
+  @OneToOne(() => AdminEntity, (admin) => admin.profile)
+  admin: AdminEntity;
 }

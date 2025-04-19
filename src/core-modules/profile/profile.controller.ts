@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { SwaggerDocs } from '../swagger/swagger_docs.decorator';
-import { SWAGGER_CONFIG } from '../swagger/swagger.config';
+import { SwaggerDocs } from '../../core/swagger/swagger_docs.decorator';
+import { SWAGGER_CONFIG } from '../../core/swagger/swagger.config';
 
 @Controller('profile')
 export class ProfileController {

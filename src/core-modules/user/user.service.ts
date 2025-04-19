@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HandleErrors } from '../shared/error_handler.decorator';
+import { HandleErrors } from '../../core/shared/error_handler.decorator';
 import { CreateUserUseCase } from './use-case/create-user.use-case';
 import { ViewUserDto } from './dto/view-user.dto';
 
