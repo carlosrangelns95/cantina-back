@@ -9,5 +9,6 @@ import { CreateUserUseCase } from './use-case/create-user.use-case';
   imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UserController],
   providers: [UserService, CreateUserUseCase],
+  exports: [UserService],
 })
 export class UserModule { }

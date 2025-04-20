@@ -4,7 +4,6 @@ import { AdminEntity } from 'src/core-modules/admin/entities/admin.entity';
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Logger } from '@nestjs/common';
-import { log } from 'console';
 
 export async function createAdminSeed(dataSource: DataSource) {
   const logger = new Logger(createAdminSeed.name);

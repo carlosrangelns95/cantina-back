@@ -1,9 +1,10 @@
+import { CreateAdminDto } from "src/core-modules/admin/dto/create-admin.dto";
 import { CreateProfileDto } from "../../core-modules/profile/dto/create-profile.dto";
 import { CreateUserDto } from "../../core-modules/user/dto/create-user.dto";
 import { UpdateUserDto } from "../../core-modules/user/dto/update-user.dto";
 import { ViewUserDto } from "../../core-modules/user/dto/view-user.dto";
 
-export const SWAGGER_CONFIG = {
+export const SWAGGER_API_ROUTES = {
 
   users: {
     create: {
@@ -63,6 +64,19 @@ export const SWAGGER_CONFIG = {
       bodyType: CreateProfileDto,
       response: [
         { status: 201, description: 'Profile created successfully', type: CreateProfileDto },
+      ]
+    },
+  },
+
+
+  admin: {
+    create: {
+      method: 'post' as const,
+      summary: 'Create one admin',
+      description: 'This function creates one admin',
+      bodyType: CreateAdminDto,
+      response: [
+        { status: 201, description: 'Admin created successfully', type: CreateAdminDto},
       ]
     },
   },

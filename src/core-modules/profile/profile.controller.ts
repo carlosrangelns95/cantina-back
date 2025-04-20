@@ -3,7 +3,7 @@ import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { SwaggerDocs } from '../../core/swagger/swagger_docs.decorator';
-import { SWAGGER_CONFIG } from '../../core/swagger/swagger.config';
+import { SWAGGER_API_ROUTES } from '../../core/swagger/swagger-routes.config';
 
 @Controller('profile')
 export class ProfileController {
@@ -12,7 +12,7 @@ export class ProfileController {
   ) { }
 
   @Post()
-  @SwaggerDocs(SWAGGER_CONFIG.profiles.create)
+  @SwaggerDocs(SWAGGER_API_ROUTES.profiles.create)
   create(@Body() createProfileDto: CreateProfileDto) {
     return this.profileService.create(createProfileDto);
   }
