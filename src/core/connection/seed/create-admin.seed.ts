@@ -10,10 +10,12 @@ export async function createAdminSeed(dataSource: DataSource) {
   const logger = new Logger(createAdminSeed.name);
   const queryRunner = dataSource.createQueryRunner();
 
+  logger.debug('Iniciando transaction...');
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
   try {
+    logger.debug('instanciando repositórios...');
     const userRepo = queryRunner.manager.getRepository(UserEntity);
     const profileRepo = queryRunner.manager.getRepository(ProfileEntity);
     const adminRepo = queryRunner.manager.getRepository(AdminEntity);
@@ -25,6 +27,7 @@ export async function createAdminSeed(dataSource: DataSource) {
       return;
     }
 
+    logger.debug('Criptografando senha...');
     const hashedPassword = await bcrypt.hash('S3nh4@2025', 10);
 
     const adminUser = userRepo.create({
@@ -33,6 +36,7 @@ export async function createAdminSeed(dataSource: DataSource) {
       password_crypt: hashedPassword,
     });
 
+    logger.debug('Salvando usuário...');
     const savedAdmin = await userRepo.save(adminUser);
 
     const profile = profileRepo.create({
@@ -41,12 +45,15 @@ export async function createAdminSeed(dataSource: DataSource) {
       description: 'Super Admin',
     });
 
+    logger.debug('Salvando perfil...');
     const savedProfile = await profileRepo.save(profile);
 
+    logger.debug('Definindo roles...');
     const admin = adminRepo.create({
       profile: savedProfile,
     });
 
+    logger.debug('Salvando dados...');
     await adminRepo.save(admin);
 
     await queryRunner.commitTransaction();
