@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { paginate, PaginateConfig, PaginateQuery } from "nestjs-paginate";
 import { SelectQueryBuilder } from "typeorm";
-import { ResponseRequestPaginatedDto } from "../dto/response-request-paginated.dto";
+import { ResponseRequestPaginatedDto } from "../dto/paginated-filter-response.dto";
 import { plainToInstance } from "class-transformer";
 
 

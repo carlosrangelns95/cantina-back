@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { setupSwagger } from './core/swagger/swagger-init.config';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 
@@ -17,8 +17,8 @@ async function bootstrap() {
 
   setupSwagger(app);
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`server: http://localhost:${process.env.PORT ?? 3000}`);
-  console.log(`swagger: http://localhost:${process.env.PORT ?? 3000}/api`);
+  Logger.debug(`server: http://localhost:${process.env.PORT ?? 3000}`);
+  Logger.debug(`swagger: http://localhost:${process.env.PORT ?? 3000}/api`);
 
 }
 bootstrap();

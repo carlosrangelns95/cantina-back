@@ -13,7 +13,7 @@ import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
 import { hashSync as bcryptHashSync } from 'bcrypt'
 import { FilterUserDto } from './dto/filter-user.dto';
 import { PaginateQuery } from 'nestjs-paginate';
-import { ResponseRequestPaginatedDto } from 'src/core/dto/response-request-paginated.dto';
+import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
 import { PaginationService } from 'src/core/pagination/pagination.service';
 
 @Injectable()

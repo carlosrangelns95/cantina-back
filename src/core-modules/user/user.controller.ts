@@ -9,7 +9,7 @@ import { CreateResponseDto } from 'src/core/dto/create-response.dto';
 import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { FilterUserDto } from './dto/filter-user.dto';
-import { ResponseRequestPaginatedDto } from 'src/core/dto/response-request-paginated.dto';
+import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
 
 @Controller('user')
 export class UserController {
