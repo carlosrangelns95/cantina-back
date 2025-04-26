@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsIn, IsNotEmpty, IsString } from "class-validator";
-import { profileEnum } from "src/core-modules/profile/entities/profile.entity";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
 import { IsCPF, IsPassword, IsValidEmail, IsValidName } from "src/core/decorators/dto-validation.decorator";
+import { ProfileRoleTypes } from "src/core/shared/enums";
 
 export class CreateAdminDto {
 
@@ -23,8 +23,8 @@ export class CreateAdminDto {
 
   @ApiProperty()
   @IsNotEmpty({ message: 'O campo role é obrigatório.' })
-  @IsIn(['user', 'admin', 'super_admin'], { message: 'O campo role deve ser um dos seguintes: user, admin, super_admin.' })
-  role: profileEnum;
+  @IsEnum(ProfileRoleTypes, { message: 'O campo role deve ser um dos seguintes: user, admin, super_admin.' })
+  role: ProfileRoleTypes;
 
   @ApiProperty()
   @IsString({ message: 'O campo description é um texto.' })

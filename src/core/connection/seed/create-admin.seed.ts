@@ -1,9 +1,10 @@
-import { ProfileEntity, profileEnum } from 'src/core-modules/profile/entities/profile.entity';
+import { ProfileEntity } from 'src/core-modules/profile/entities/profile.entity';
 import { UserEntity } from 'src/core-modules/user/entities/user.entity';
 import { AdminEntity } from 'src/core-modules/admin/entities/admin.entity';
 import { DataSource } from 'typeorm';
 import { Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { ProfileRoleTypes } from 'src/core/shared/enums';
 
 export async function createAdminSeed(dataSource: DataSource) {
   const logger = new Logger(createAdminSeed.name);
@@ -36,7 +37,7 @@ export async function createAdminSeed(dataSource: DataSource) {
 
     const profile = profileRepo.create({
       user: savedAdmin,
-      role: profileEnum.SUPER_ADMIN,
+      role: ProfileRoleTypes.SUPER_ADMIN,
       description: 'Super Admin',
     });
 

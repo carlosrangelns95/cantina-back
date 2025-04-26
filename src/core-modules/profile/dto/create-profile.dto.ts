@@ -1,13 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsIn, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
-import { profileEnum } from "../entities/profile.entity";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { ProfileRoleTypes } from "src/core/shared/enums";
 
 export class CreateProfileDto {
 
-  @ApiProperty()
+  @ApiProperty({ example: 'user' })
   @IsNotEmpty({ message: 'O campo role é obrigatório.' })
-  @IsIn(['user', 'admin', 'super_admin'], { message: 'O campo role deve ser um dos seguintes: user, admin, super_admin.' })
-  role: profileEnum;
+  @IsEnum(ProfileRoleTypes, { message: 'O campo role deve ser um dos seguintes: user, admin, super_admin.' })
+  role: ProfileRoleTypes;
 
   @ApiProperty()
   @IsOptional()
