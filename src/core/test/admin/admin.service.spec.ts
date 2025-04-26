@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AdminService } from '../../src/core-modules/admin/admin.service';
+import { AdminService } from '../../../core-modules/admin/admin.service';
 
 describe('AdminService', () => {
   let service: AdminService;

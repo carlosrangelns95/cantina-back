@@ -1,8 +1,0 @@
-export class ResponseRequestDto<T> {
-  data: T[];
-  paginate: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-  }
-}
