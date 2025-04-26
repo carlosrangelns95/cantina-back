@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 import { IsNumber, IsOptional, IsString } from "class-validator";
-import { IsOptionalEmail } from "src/core/decorators/human.decorator";
+import { IsOptionalEmail } from "src/core/decorators/dto-validation.decorator";
 
 export class FilterUserDto {
 

@@ -1,4 +1,4 @@
-import { IsPassword, IsValidEmail, IsValidName } from "src/core/decorators/human.decorator";
+import { IsPassword, IsValidEmail, IsValidName } from "src/core/decorators/dto-validation.decorator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto {
