@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { paginate, PaginateConfig, PaginateQuery } from "nestjs-paginate";
 import { SelectQueryBuilder } from "typeorm";
-import { ResponseRequestDto } from "src/core/shared/response_request.dto";
+import { ResponseRequestPaginatedDto } from "../dto/response-request-paginated.dto";
 import { plainToInstance } from "class-transformer";
 
 
@@ -14,11 +14,11 @@ export class PaginationService {
   ) { }
 
   async paginateData<T>(
-    pagination: PaginateQuery, 
-    queryBuilded: SelectQueryBuilder<any>, 
+    pagination: PaginateQuery,
+    queryBuilded: SelectQueryBuilder<any>,
     searchableColumns: string[],
     dto: new () => T,
-  ): Promise<ResponseRequestDto<any>> {
+  ): Promise<ResponseRequestPaginatedDto<any>> {
 
     const paginateConfig: PaginateConfig<any> = {
       defaultSortBy: [['created_at', this.configService.get('DEFAULT_SORT_ORDER') ?? 'DESC']],
