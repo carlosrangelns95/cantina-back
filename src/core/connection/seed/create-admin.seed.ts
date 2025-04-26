@@ -2,8 +2,8 @@ import { ProfileEntity, profileEnum } from 'src/core-modules/profile/entities/pr
 import { UserEntity } from 'src/core-modules/user/entities/user.entity';
 import { AdminEntity } from 'src/core-modules/admin/entities/admin.entity';
 import { DataSource } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { Logger } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 export async function createAdminSeed(dataSource: DataSource) {
   const logger = new Logger(createAdminSeed.name);
@@ -28,7 +28,6 @@ export async function createAdminSeed(dataSource: DataSource) {
 
     const adminUser = userRepo.create({
       name: 'Super Admin',
-      cpf: '054.693.323-81',
       email: 'carlos.rangel.ns95@gmail.com',
       password_crypt: hashedPassword,
     });
