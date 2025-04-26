@@ -11,22 +11,19 @@ export class UserEntity {
   name: string;
 
   @Column({ unique: true })
-  cpf: string;
-
-  @Column({ unique: true })
   email: string;
 
   @Column({ name: 'password_crypt' })
   password_crypt: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
-  updated_at: Date;
+  updatedAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deleted_at: Date;
+  deletedAt: Date;
 
 
   // um usuário pode ter vários perfis

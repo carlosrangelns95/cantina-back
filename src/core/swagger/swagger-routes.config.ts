@@ -2,7 +2,9 @@ import { CreateAdminDto } from "src/core-modules/admin/dto/create-admin.dto";
 import { CreateProfileDto } from "../../core-modules/profile/dto/create-profile.dto";
 import { CreateUserDto } from "../../core-modules/user/dto/create-user.dto";
 import { UpdateUserDto } from "../../core-modules/user/dto/update-user.dto";
-import { ViewUserDto } from "../../core-modules/user/dto/view-user.dto";
+import { ReadUserDto } from "../../core-modules/user/dto/read-user.dto";
+import { CreateResponseDto } from "../dto/create-response.dto";
+import { UpdateResponseDto } from "../dto/update-response.dto";
 
 export const SWAGGER_API_ROUTES = {
 
@@ -13,7 +15,7 @@ export const SWAGGER_API_ROUTES = {
       description: 'This function creates one user',
       bodyType: CreateUserDto,
       response: [
-        { status: 201, description: 'User created successfully', type: ViewUserDto },
+        { status: 201, description: 'User created successfully', type: CreateResponseDto },
       ]
     },
 
@@ -21,9 +23,9 @@ export const SWAGGER_API_ROUTES = {
       method: 'get' as const,
       summary: 'Find all users by filters',
       description: 'This function get all users by filters (paginated)',
-      queryParams: ['page', 'name', 'email', 'role'],
+      queryParams: ['page', 'name', 'email'],
       response: [
-        { status: 200, description: 'Users found successfully (paginated)', type: CreateUserDto, isArray: true },
+        { status: 200, description: 'Users found successfully (paginated)', type: ReadUserDto, isArray: true },
       ]
     },
 
@@ -32,7 +34,7 @@ export const SWAGGER_API_ROUTES = {
       summary: 'Find one user by filters',
       description: 'This function get all users by filters',
       response: [
-        { status: 200, description: 'User found successfully', type: ViewUserDto },
+        { status: 200, description: 'User found successfully', type: ReadUserDto },
       ]
     },
 
@@ -42,7 +44,7 @@ export const SWAGGER_API_ROUTES = {
       description: 'This function update one user by id',
       bodyType: UpdateUserDto,
       response: [
-        { status: 200, description: 'User updated successfully', type: ViewUserDto },
+        { status: 200, description: 'User updated successfully', type: ReadUserDto },
       ]
     },
 
@@ -51,7 +53,7 @@ export const SWAGGER_API_ROUTES = {
       summary: 'Remove one user (this funcion is not implemented yet)',
       description: 'This function remove one user by id',
       response: [
-        { status: 200, description: 'User removed successfully', type: ViewUserDto },
+        { status: 200, description: 'User removed successfully', type: UpdateResponseDto },
       ]
     }
   },
@@ -68,7 +70,6 @@ export const SWAGGER_API_ROUTES = {
     },
   },
 
-
   admin: {
     create: {
       method: 'post' as const,
@@ -76,7 +77,7 @@ export const SWAGGER_API_ROUTES = {
       description: 'This function creates one admin',
       bodyType: CreateAdminDto,
       response: [
-        { status: 201, description: 'Admin created successfully', type: CreateAdminDto},
+        { status: 201, description: 'Admin created successfully', type: CreateAdminDto },
       ]
     },
   },

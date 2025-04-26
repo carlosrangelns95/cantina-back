@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 
-export class ViewUserDto {
+export class ReadUserDto {
 
   @ApiProperty()
   @Expose()
@@ -13,10 +13,10 @@ export class ViewUserDto {
 
   @ApiProperty()
   @Expose()
-  created_at: Date;
+  createdAt: Date;
 
   @ApiProperty()
   @Expose()
-  is_active: boolean;
-  
+  updatedAt: Date;
+
 }

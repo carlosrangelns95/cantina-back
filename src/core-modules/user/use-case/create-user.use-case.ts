@@ -3,9 +3,8 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { ViewUserDto } from '../dto/view-user.dto';
-import { plainToInstance } from 'class-transformer';
-import { Logger } from '@nestjs/common';
+import { HttpStatus, Logger } from '@nestjs/common';
+import { CreateResponseDto } from 'src/core/dto/create-response.dto';
 
 export class CreateUserUseCase {
 
@@ -16,29 +15,25 @@ export class CreateUserUseCase {
     private readonly userRepository: Repository<UserEntity>
   ) { }
 
-  async execute(data: CreateUserDto): Promise<ViewUserDto> {
+  async execute(data: CreateUserDto): Promise<CreateResponseDto> {
 
     const { password, ...restDto } = data;
     const passwordCrypt = bcryptHashSync(password, 10);
-    
-    const user = this.userRepository.create({ // isso evta conflito ao adicionat o campo password_crypt com o tipo do DTO
+    const user = this.userRepository.create({ // isso evita conflito ao adicionar o campo password_crypt com o tipo do DTO
       ...restDto,
       password_crypt: passwordCrypt,
     })
 
-
-    // criar uma forma de verificar todos os relaconamentos necessários ou criar uma transaction
+    // criar uma forma de verificar todos os relacionamentos necessários ou criar uma transaction
     // verificar a utilização de do Logger para debug
 
     const savedUser = await this.userRepository.save(user)
+    this.logger.debug(`create user: ${JSON.stringify(savedUser)}`);
 
-    // so exibe  campos permitidos no view dto
-    const transformed = plainToInstance(ViewUserDto, savedUser, {
-      excludeExtraneousValues: true,
-    });
-
-    this.logger.debug(`create user: ${JSON.stringify(transformed)}`);
-
-    return transformed;
+    return {
+      id: savedUser.id,
+      message: 'User created successfully',
+      code: HttpStatus.CREATED,
+    };
   }
 }

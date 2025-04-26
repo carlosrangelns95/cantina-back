@@ -1,24 +1,18 @@
+import { IsPassword, IsValidEmail, IsValidName } from "src/core/decorators/human.decorator";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty } from "class-validator";
-import { IsCPF, IsPassword, IsValidEmail, IsValidName } from "src/core/decorators/human.decorator";
 
 export class CreateUserDto {
 
-  @ApiProperty()
+  @ApiProperty({ example: 'joao@email.com' })
   @IsValidEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Joao da Silva' })
   @IsValidName()
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'W234@567e' })
   @IsPassword()
   password: string
-
-  @ApiProperty()
-  @IsCPF()
-  @IsNotEmpty({ message: 'O campo CPF é obrigatório.' })
-  cpf: string;
 
 }
