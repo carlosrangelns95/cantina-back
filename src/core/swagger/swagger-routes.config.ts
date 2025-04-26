@@ -5,6 +5,9 @@ import { UpdateUserDto } from "../../core-modules/user/dto/update-user.dto";
 import { ReadUserDto } from "../../core-modules/user/dto/read-user.dto";
 import { CreateResponseDto } from "../dto/create-response.dto";
 import { UpdateResponseDto } from "../dto/update-response.dto";
+import { ReadProfileDto } from "src/core-modules/profile/dto/read-profile.dto";
+import { UpdateProfileDto } from "src/core-modules/profile/dto/update-profile.dto";
+import { FilterProfileDto } from "src/core-modules/profile/dto/filter-profile.dto";
 
 export const SWAGGER_API_ROUTES = {
 
@@ -65,9 +68,48 @@ export const SWAGGER_API_ROUTES = {
       description: 'This function creates one profile',
       bodyType: CreateProfileDto,
       response: [
-        { status: 201, description: 'Profile created successfully', type: CreateProfileDto },
+        { status: 201, description: 'Profile created successfully', type: CreateResponseDto },
       ]
     },
+
+    getAll: {
+      method: 'get' as const,
+      summary: 'Find all profiles by filters',
+      bodyType: FilterProfileDto,
+      description: 'This function get all profiles by filters (paginated)',
+      queryParams: ['page', 'role', 'description', 'user_id'],
+      response: [
+        { status: 200, description: 'Profiles found successfully (paginated)', type: ReadProfileDto, isArray: true },
+      ]
+    },
+
+    getOne: {
+      method: 'get' as const,
+      summary: 'Find one profile by filters',
+      description: 'This function get all profiles by filters',
+      response: [
+        { status: 200, description: 'Profile found successfully', type: ReadProfileDto },
+      ]
+    },
+
+    update: {
+      method: 'patch' as const,
+      summary: 'Update one profile',
+      description: 'This function update one profile by id',
+      bodyType: UpdateProfileDto,
+      response: [
+        { status: 200, description: 'Profile updated successfully', type: UpdateResponseDto },
+      ]
+    },
+
+    remove: {
+      method: 'delete' as const,
+      summary: 'Remove one profile (this funcion is not implemented yet)',
+      description: 'This function remove one profile by id',
+      response: [
+        { status: 200, description: 'Profile removed successfully', type: UpdateResponseDto },
+      ]
+    }
   },
 
   admin: {

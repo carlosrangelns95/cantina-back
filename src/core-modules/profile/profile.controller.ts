@@ -1,9 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { SwaggerDocs } from '../../core/swagger/swagger_docs.decorator';
 import { SWAGGER_API_ROUTES } from '../../core/swagger/swagger-routes.config';
+import { CreateResponseDto } from 'src/core/dto/create-response.dto';
+import { ReadProfileDto } from './dto/read-profile.dto';
+import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
+import { Paginate, PaginateQuery } from 'nestjs-paginate';
+import { FilterProfileDto } from './dto/filter-profile.dto';
+import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -13,27 +19,32 @@ export class ProfileController {
 
   @Post()
   @SwaggerDocs(SWAGGER_API_ROUTES.profiles.create)
-  create(@Body() createProfileDto: CreateProfileDto) {
+  create(@Body() createProfileDto: CreateProfileDto): Promise<CreateResponseDto> {
     return this.profileService.create(createProfileDto);
   }
 
   @Get()
-  findAll() {
-    return this.profileService.findAll();
+  @SwaggerDocs(SWAGGER_API_ROUTES.profiles.getAll)
+  findAll(
+    @Query() filters: FilterProfileDto,
+    @Paginate() pagination: PaginateQuery,
+  ): Promise<ResponseRequestPaginatedDto<ReadProfileDto>> {
+    return this.profileService.findAll(filters, pagination);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.profileService.findOne(+id);
+  findOne(@Param('id') id: number): Promise<ReadProfileDto> {
+    return this.profileService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
-    return this.profileService.update(+id, updateProfileDto);
+  @SwaggerDocs(SWAGGER_API_ROUTES.profiles.update)
+  update(@Param('id') id: number, @Body() updateProfileDto: UpdateProfileDto): Promise<UpdateResponseDto> {
+    return this.profileService.update(id, updateProfileDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.profileService.remove(+id);
+  remove(@Param('id') id: number): Promise<UpdateResponseDto> {
+    return this.profileService.remove(id);
   }
 }

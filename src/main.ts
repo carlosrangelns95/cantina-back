@@ -6,14 +6,15 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true, // ignora qualquer propriedade que não esteja no DTO
-      forbidNonWhitelisted: true, // lança erro se alguém mandar propriedade a mais
-      transform: true, // transforma automaticamente payloads em instâncias da classe DTO
-    }),
-  );
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transformOptions: {
+      enableImplicitConversion: true,
+    },
+  },
+  ));
 
   setupSwagger(app);
   await app.listen(process.env.PORT ?? 3000);

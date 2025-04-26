@@ -1,6 +1,6 @@
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserEntity } from "src/core-modules/user/entities/user.entity";
 import { AdminEntity } from "src/core-modules/admin/entities/admin.entity";
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProfileRoleTypes } from "src/core/shared/enums";
 
 @Entity('profiles')
@@ -16,13 +16,13 @@ export class ProfileEntity {
   description: string;
 
   @CreateDateColumn({ name: 'created_at' })
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updated_at: Date;
+  updatedAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deleted_at: Date;
+  deletedAt: Date;
 
 
   // Muitos perfis pertencem a um usuário

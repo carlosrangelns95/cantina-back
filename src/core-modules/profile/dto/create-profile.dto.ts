@@ -5,15 +5,15 @@ import { ProfileRoleTypes } from "src/core/shared/enums";
 export class CreateProfileDto {
 
   @ApiProperty({ example: 'user' })
-  @IsNotEmpty({ message: 'O campo role é obrigatório.' })
-  @IsEnum(ProfileRoleTypes, { message: 'O campo role deve ser um dos seguintes: user, admin, super_admin.' })
+  @IsNotEmpty({ message: (args) => `O campo "${args.property}" é obrigatório.` })
+  @IsEnum(ProfileRoleTypes, { message: (args) => `O campo "${args.property}" deve ser um dos seguintes: ${JSON.stringify(Object.values(ProfileRoleTypes))}` })
   role: ProfileRoleTypes;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Usuário comum do sistema' })
   @IsOptional()
-  description: string;
+  description?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   @IsNotEmpty({ message: 'O campo user_id é obrigatório.' })
   @IsNumber({}, { message: 'O campo user_id deve conter apenas números.' })
   user_id: number;
