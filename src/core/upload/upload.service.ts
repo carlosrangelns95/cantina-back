@@ -1,30 +1,27 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { v2 as Cloudinary, UploadApiResponse } from 'cloudinary';
-import { Readable } from 'stream';
+// upload/upload.service.ts
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { CloudinaryService } from './services/coudinary.service';
+import { MulterService } from './services/multer.service';
 
 @Injectable()
 export class UploadService {
-
   constructor(
-    @Inject('CLOUDINARY') private cloudinary: typeof Cloudinary,
+    private readonly configService: ConfigService,
+    private readonly cloudinaryService: CloudinaryService,
+    private readonly multerService: MulterService,
   ) { }
 
-  async uploadFile(file: Express.Multer.File): Promise<UploadApiResponse> {
-    return new Promise((resolve, reject) => {
-      const uploadStream = this.cloudinary.uploader.upload_stream(
-        {
-          folder: 'meus_uploads',
-        },
-        (error, result) => {
-          if (error || !result) {
-            reject(error || new Error('Erro desconhecido no upload'));
-          } else {
-            resolve(result);
-          }
-        },
-      );
+  async execute(file: Express.Multer.File): Promise<string> {
+    const strategy = this.configService.get<string>('UPLOAD_STRATEGY');
 
-      Readable.from(file.buffer).pipe(uploadStream);
-    });
+    switch (strategy) {
+      case 'cloudinary':
+        return this.cloudinaryService.upload(file);
+      case 'multer':
+        return this.multerService.upload(file);
+      default:
+        throw new Error(`Unsupported upload strategy: ${strategy}`);
+    }
   }
 }

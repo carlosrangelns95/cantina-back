@@ -1,28 +1,14 @@
 import { Module } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { UploadController } from './upload.controller';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-import { v2 as cloudinary } from 'cloudinary';
+import { ConfigModule } from '@nestjs/config';
+import { MulterService } from './services/multer.service';
+import { CloudinaryService } from './services/coudinary.service';
 
 @Module({
   imports: [ConfigModule],
   controllers: [UploadController],
-  providers: [
-    UploadService,
-    {
-      provide: 'CLOUDINARY',
-      useFactory: async (configService: ConfigService) => {
-        cloudinary.config({
-          cloud_name: configService.get<string>('CLOUDINARY_CLOUD_NAME'),
-          api_key: configService.get<string>('CLOUDINARY_API_KEY'),
-          api_secret: configService.get<string>('CLOUDINARY_API_SECRET'),
-        });
-        return cloudinary;
-      },
-      inject: [ConfigService],
-    },
-  ],
-  exports: [UploadService, 'CLOUDINARY'],
+  providers: [UploadService, MulterService, CloudinaryService],
+  exports: [UploadService],
 })
-export class UploadModule {}
+export class UploadModule { }

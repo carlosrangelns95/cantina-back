@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MulterService } from '../../upload-use-case/multer/multer.service';
+import { MulterService } from '../../upload/multer/multer.service';
 
 describe('MulterService', () => {
   let service: MulterService;
