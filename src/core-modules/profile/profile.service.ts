@@ -44,33 +44,33 @@ export class ProfileService {
     };
   }
 
-  async findAll(
-    filters: FilterProfileDto,
-    pagination: PaginateQuery,
-  ): Promise<ResponseRequestPaginatedDto<ReadProfileDto>> {
-    const likeFields = ['description'];
-    const exactFields = ['role', 'user_id'];
-    const queryBuilded = this.profileRepository.createQueryBuilder('profile');
+  // async findAll(
+  //   filters: FilterProfileDto,
+  //   pagination: PaginateQuery,
+  // ): Promise<ResponseRequestPaginatedDto<ReadProfileDto>> {
+  //   const likeFields = ['description'];
+  //   const exactFields = ['role', 'user_id'];
+  //   const queryBuilded = this.profileRepository.createQueryBuilder('profile');
 
-    // campos sendo gerados dinamicamente (ex: queryBuilded.andWhere("s.nome LIKE :nome", { nome: "%ana%" });)
-    likeFields.forEach((field) => {
-      if (filters[field]) {
-        queryBuilded.andWhere(`profile.${field} LIKE :${field}`, {
-          [field]: `%${filters[field]}%`
-        })
-      }
-    });
+  //   // campos sendo gerados dinamicamente (ex: queryBuilded.andWhere("s.nome LIKE :nome", { nome: "%ana%" });)
+  //   likeFields.forEach((field) => {
+  //     if (filters[field]) {
+  //       queryBuilded.andWhere(`profile.${field} LIKE :${field}`, {
+  //         [field]: `%${filters[field]}%`
+  //       })
+  //     }
+  //   });
 
-    exactFields.forEach((field) => {
-      if (filters[field]) {
-        queryBuilded.andWhere(`profile.${field} = :${field}`, {
-          [field]: filters[field]
-        })
-      }
-    });
+  //   exactFields.forEach((field) => {
+  //     if (filters[field]) {
+  //       queryBuilded.andWhere(`profile.${field} = :${field}`, {
+  //         [field]: filters[field]
+  //       })
+  //     }
+  //   });
 
-    return await this.paginationService.paginateData(pagination, queryBuilded, [...likeFields, ...exactFields], ReadProfileDto);
-  }
+  //   return await this.paginationService.paginateData(pagination, queryBuilded, [...likeFields, ...exactFields], ReadProfileDto);
+  // }
 
   async findOne(id: number): Promise<ReadProfileDto> {
     const profile = await this.profileRepository.findOne({ where: { id } });

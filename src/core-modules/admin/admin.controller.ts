@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { SwaggerDocs } from 'src/core/swagger/swagger_docs.decorator';
 import { SWAGGER_API_ROUTES } from 'src/core/swagger/swagger-routes.config';
+import { Paginate, PaginateQuery } from 'nestjs-paginate';
+import { FilterUserDto } from '../user/dto/filter-user.dto';
 
 @Controller('admin')
 export class AdminController {
@@ -19,8 +21,11 @@ export class AdminController {
   }
 
   @Get()
-  findAll() {
-    return this.adminService.findAll();
+  findAll(
+    @Query() filters: FilterUserDto,
+    @Paginate() pagination: PaginateQuery,
+  ) {
+    return this.adminService.findAll(filters, pagination);
   }
 
   @Get(':id')
