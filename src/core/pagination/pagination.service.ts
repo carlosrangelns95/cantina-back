@@ -16,28 +16,18 @@ export class PaginationService {
   async paginateData<T>(
     pagination: PaginateQuery,
     queryBuilded: SelectQueryBuilder<any>,
-    searchableColumns: string[],
     dto: new () => T,
+    config: PaginateConfig<any>,
   ): Promise<ResponseRequestPaginatedDto<any>> {
 
-    const paginateConfig: PaginateConfig<any> = {
-      defaultSortBy: [['created_at', this.configService.get('DEFAULT_SORT_ORDER') ?? 'DESC']],
-      sortableColumns: ['created_at'],
-      searchableColumns: searchableColumns,
-      defaultLimit: this.configService.get('DEFAULT_LIMIT_PAGINATION'),
-    };
-
-    const result = await paginate(pagination, queryBuilded, paginateConfig);
+    const result = await paginate(pagination, queryBuilded, config);
+    console.log(result.data);
 
     if (result.meta.totalItems === 0)
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
 
-    const transformed = plainToInstance(dto, result.data, {
-      excludeExtraneousValues: true,
-    });
-
     return {
-      data: transformed,
+      data: plainToInstance(dto, result.data, { excludeExtraneousValues: true }),
       paginate: {
         currentPage: result.meta.currentPage ?? 1,
         totalItems: result.meta.totalItems ?? 0,
