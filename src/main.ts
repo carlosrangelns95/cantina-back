@@ -19,7 +19,9 @@ async function bootstrap() {
   setupSwagger(app);
   await app.listen(process.env.PORT ?? 3000);
   Logger.debug(`server: http://localhost:${process.env.PORT ?? 3000}`);
-  Logger.debug(`swagger: http://localhost:${process.env.PORT ?? 3000}/api`);
+  Logger.debug(
+    `swagger: http://localhost:${process.env.PORT ?? 3000}/api-docs`,
+  );
 }
 
 bootstrap();

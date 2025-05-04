@@ -7,9 +7,18 @@ export function setupSwagger(app: INestApplication): void {
     .setTitle('Template base back-end')
     .setDescription('API routes')
     .setVersion('1.0')
-    // .addBearerAuth() // Se você usa autenticação JWT
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+      },
+      'access-token', // nome da security que usaremos nas rotas
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api-docs', app, document);
 }
