@@ -1,64 +1,57 @@
-// import { Injectable, UnauthorizedException } from '@nestjs/common';
-// import { ConfigService } from '@nestjs/config';
-// import { AuthResponseDto } from './dto/auth.dto';
-// import { compareSync as bcryptCompareSync } from 'bcrypt';
-// import { JwtService } from '@nestjs/jwt';
-// import { RequestPasswordResetUseCase } from './use-cases/request_password_reset.use-case';
-// import { MailService } from 'src/core/mailer/mailer.service';
-// import { ResetPasswordUseCase } from './use-cases/reset_password.use-case';
-// import { UserEntity } from 'src/core/db/entities/users.entity';
-// import { Repository } from 'typeorm';
-// import { InjectRepository } from '@nestjs/typeorm';
-// import { LoginDto } from './dto/login.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { UserService } from 'src/core-modules/user/user.service';
+import { UserEntity } from 'src/core-modules/user/entities/user.entity';
+import { AuthResponseDto } from 'src/core/auth/dto/AuthResponse.dto';
+import { LoginDto } from 'src/core/auth/dto/login.dto';
+import * as bcrypt from 'bcrypt';
 
-// @Injectable()
-// export class AuthService {
+@Injectable()
+export class AuthService {
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>,
+    private readonly configService: ConfigService,
+    private readonly usersService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
-//   constructor(
-//     @InjectRepository(UserEntity)
-//     private usersRepository: Repository<UserEntity>,
-//     private readonly jwtService: JwtService,
-//     private readonly configService: ConfigService,
-//     private readonly mailService: MailService,
+  async findUserById(id: number) {
+    return await this.usersService.findOne(id);
+  }
 
-//     private readonly requestPasswordResetUseCase: RequestPasswordResetUseCase,
-//     private readonly resetPasswordUseCase: ResetPasswordUseCase,
-//   ) { }
+  login(user: { id: number; email: string }) {
+    const payload = { sub: user.id, email: user.email };
+    return {
+      access_token: this.jwtService.sign(payload, {
+        expiresIn: this.configService.get('JWT_EXPIRATION_TIME'),
+      }),
+    };
+  }
 
-//   async signIn(login: LoginDto): Promise<AuthResponseDto> {
+  async validateUser(data: LoginDto): Promise<AuthResponseDto> {
+    const { email, password } = data;
 
-//     const foundUser = await this.usersRepository.findOneByOrFail({
-//       email: login.email
-//     });
+    const user = await this.usersRepository.findOneOrFail({
+      where: { email },
+      relations: ['profile', 'profile.admin'],
+    });
 
-//     if (!bcryptCompareSync(login.password, foundUser.password)) throw new UnauthorizedException();
+    if (!(await bcrypt.compare(password, user.password_crypt)))
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
 
-//     const payload = {
-//       sub: foundUser.id,
-//       email: foundUser.email
-//     };
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.profile,
+    };
 
-//     const token = this.jwtService.sign(payload);
-
-//     return {
-//       token,
-//       expiresIn: +this.configService.get<number>('JWT_EXPIRATION_TIME')!
-//     };
-//   }
-
-//   async forgotPassword(email: string) {
-//     return this.requestPasswordResetUseCase.execute(email);
-//   }
-
-//   async sendResetPasswordEmail(email: string, token: string) {
-//     return this.mailService.sendMail(
-//       email,
-//       'Teste de Email',
-//       '<h1>Olá!</h1><p>Este é um e-mail de teste.</p>',
-//     );
-//   }
-
-//   async resetPassword(token: string, password: string, rePassword: string) {
-//     return this.resetPasswordUseCase.execute(token, password, rePassword);
-//   }
-// }
+    return {
+      token: this.jwtService.sign(payload),
+      expiresIn: this.configService.get('JWT_EXPIRATION_TIME')!,
+    };
+  }
+}

@@ -1,32 +1,30 @@
-// import { Module } from '@nestjs/common';
-// import { AuthController } from './auth.controller';
-// import { AuthService } from './auth.service';
-// import { UsersModule } from '../modules/users/users.module';
-// import { JwtModule } from '@nestjs/jwt';
-// import { RequestPasswordResetUseCase } from './use-cases/request_password_reset.use-case';
-// import { UserEntity } from 'src/core/db/entities/users.entity';
-// import { TypeOrmModule } from '@nestjs/typeorm';
-// import { MailService } from 'src/core/mailer/mailer.service';
-// import { ResetPasswordUseCase } from './use-cases/reset_password.use-case';
-// import { ConfigService } from '@nestjs/config';
+// src/auth/auth.module.ts
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { UserModule } from 'src/core-modules/user/user.module';
+import { JwtStrategy } from 'src/core/auth/jwt.strategy';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserEntity } from 'src/core-modules/user/entities/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthController } from './auth.controller';
 
-// @Module({
-//   imports: [
-//     JwtModule.registerAsync({
-//       global: true,
-//       imports: [],
-//       useFactory: async (configService: ConfigService) => ({
-//         secret: configService.get<string>('JWT_SECRET'),
-//         signOptions: {
-//           expiresIn: +configService.get<number>('JWT_EXPIRATION_TIME')!,
-//         },
-//       }),
-//       inject: [ConfigService],
-//     }),
-//     TypeOrmModule.forFeature([UserEntity]),
-//     UsersModule,
-//   ],
-//   controllers: [AuthController],
-//   providers: [AuthService, MailService, RequestPasswordResetUseCase, ResetPasswordUseCase],
-// })
-// export class AuthModule { }
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([UserEntity]),
+    PassportModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET'),
+      }),
+    }),
+    UserModule,
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
+})
+export class AuthModule {}
