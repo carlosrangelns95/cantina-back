@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,13 +17,16 @@ import { SWAGGER_API_ROUTES } from '../../core/swagger/swagger-routes.config';
 import { ReadUserDto } from './dto/read-user.dto';
 import { CreateResponseDto } from 'src/core/dto/create-response.dto';
 import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
-import { Paginate, PaginateQuery } from 'nestjs-paginate';
+import { Paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { FilterUserDto } from './dto/filter-user.dto';
-import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
+import { PaginatedResponse } from 'src/core/dto/paginated-filter-response.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBasicAuth } from '@nestjs/swagger';
+import { UserEntity } from 'src/core-modules/user/entities/user.entity';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @SwaggerDocs(SWAGGER_API_ROUTES.users.create)
@@ -21,11 +34,13 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  // @UseGuards(AuthGuard('jwt'))
+  // @ApiBasicAuth()
   @Get()
   findAll(
     @Query() filters: FilterUserDto,
     @Paginate() pagination: PaginateQuery,
-  ): Promise<ResponseRequestPaginatedDto<ReadUserDto>> {
+  ): Promise<Paginated<UserEntity>>  {
     return this.userService.findAll(filters, pagination);
   }
 

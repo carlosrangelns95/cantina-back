@@ -1,7 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
-import { IsOptionalEmail } from 'src/core/decorators/dto-validation.decorator';
 
 export class FilterUserDto {
   @ApiPropertyOptional({ example: 1, required: false })
@@ -10,7 +9,8 @@ export class FilterUserDto {
   page?: number;
 
   @ApiProperty({ example: 'joao@email.com', required: false })
-  @IsOptionalEmail()
+  @IsOptional()
+  @IsString()
   @Expose()
   email?: string;
 

@@ -5,11 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserUseCase } from './use-case/create-user.use-case';
 import { PaginationService } from 'src/core/pagination/pagination.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity])],
+  imports: [TypeOrmModule.forFeature([UserEntity]), ConfigModule],
   controllers: [UserController],
   providers: [UserService, CreateUserUseCase, PaginationService],
   exports: [UserService],
 })
-export class UserModule { }
+export class UserModule {}

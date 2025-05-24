@@ -1,35 +1,35 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Expose } from "class-transformer";
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { ProfileRoleTypes } from "src/core/shared/enums";
+import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
+import { ReadAdminDto } from 'src/core-modules/admin/dto/read-admin.dto';
+import { ProfileRoleTypes } from 'src/core/shared/enums';
 
 export class ReadProfileDto {
-
   @ApiProperty({ example: 1 })
-  @IsNumber()
   @Expose()
   id: number;
 
   @ApiProperty({ example: 'user' })
-  @IsString()
   @Expose()
   role: ProfileRoleTypes;
 
   @ApiProperty({ example: 'Super Admin' })
-  @IsOptional()
-  @IsString()
   @Expose()
   description: string;
 
-  @ApiProperty({ example: 1 })
-  @IsNumber()
-  user_id: number;
-
   @ApiProperty()
-  @IsDateString()
+  @Expose()
   createdAt: Date;
 
   @ApiProperty()
-  @IsDateString()
+  @Expose()
   updatedAt: Date;
+
+  // @Expose()
+  // @Transform(({ obj }) => obj.role === 'admin' ? obj.admin : undefined)  // só virá se for admin
+  // @Type(() => ReadAdminDto)
+  // admin?: ReadAdminDto;
+
+  @Expose()
+  @Type(() => ReadAdminDto)
+  admin?: ReadAdminDto;
 }

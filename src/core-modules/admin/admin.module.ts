@@ -7,6 +7,7 @@ import { CreateAdminUseCase } from './use-case/create-admin.use-case';
 import { UserEntity } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { ProfileEntity } from '../profile/entities/profile.entity';
+import { PaginationService } from 'src/core/pagination/pagination.service';
 
 @Module({
   imports: [
@@ -14,6 +15,6 @@ import { ProfileEntity } from '../profile/entities/profile.entity';
     UserModule,
   ],
   controllers: [AdminController],
-  providers: [AdminService, CreateAdminUseCase],
+  providers: [AdminService, CreateAdminUseCase, PaginationService],
 })
 export class AdminModule { }

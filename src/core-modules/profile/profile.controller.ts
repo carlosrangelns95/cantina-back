@@ -9,7 +9,7 @@ import { ReadProfileDto } from './dto/read-profile.dto';
 import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { FilterProfileDto } from './dto/filter-profile.dto';
-import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
+import { PaginatedResponse } from 'src/core/dto/paginated-filter-response.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -23,14 +23,14 @@ export class ProfileController {
     return this.profileService.create(createProfileDto);
   }
 
-  @Get()
-  @SwaggerDocs(SWAGGER_API_ROUTES.profiles.getAll)
-  findAll(
-    @Query() filters: FilterProfileDto,
-    @Paginate() pagination: PaginateQuery,
-  ): Promise<ResponseRequestPaginatedDto<ReadProfileDto>> {
-    return this.profileService.findAll(filters, pagination);
-  }
+  // @Get()
+  // @SwaggerDocs(SWAGGER_API_ROUTES.profiles.getAll)
+  // findAll(
+  //   @Query() filters: FilterProfileDto,
+  //   @Paginate() pagination: PaginateQuery,
+  // ): Promise<ResponseRequestPaginatedDto<ReadProfileDto>> {
+  //   return this.profileService.findAll(filters, pagination);
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: number): Promise<ReadProfileDto> {

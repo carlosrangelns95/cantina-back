@@ -5,22 +5,22 @@ import { CreateAdminUseCase } from './use-case/create-admin.use-case';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AdminEntity } from './entities/admin.entity';
 import { Repository } from 'typeorm';
-import {
-  Paginate,
-  PaginateConfig,
-  PaginateQuery,
-} from 'nestjs-paginate';
+import { paginate, Paginate, PaginateConfig, PaginateQuery } from 'nestjs-paginate';
 import { FilterUserDto } from '../user/dto/filter-user.dto';
 import { PaginationService } from 'src/core/pagination/pagination.service';
 import { ConfigService } from '@nestjs/config';
-import { ReadAdminDto } from './dto/read-admin.dto';
-import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
+import { ReadUserWithProfileAdminDto } from './dto/read-admin.dto';
+import { UserEntity } from 'src/core-modules/user/entities/user.entity';
+import { ProfileRoleTypes } from 'src/core/shared/enums';
+import { HandleErrors } from 'src/core/decorators/error-handler.decorator';
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(AdminEntity)
     private readonly adminRepository: Repository<AdminEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly createAdminUseCase: CreateAdminUseCase,
     private readonly paginateService: PaginationService,
     private readonly configService: ConfigService,
@@ -34,28 +34,43 @@ export class AdminService {
     @Query() filters: FilterUserDto,
     @Paginate() pagination: PaginateQuery,
   ) {
-    const query = this.adminRepository
-      .createQueryBuilder('admin')
-      .innerJoinAndSelect('admin.profile', 'profile')
-      .innerJoinAndSelect('profile.user', 'user')
+    const queryBuilded = this.userRepository
+      .createQueryBuilder('user')
+      .innerJoinAndSelect('user.profile', 'profile')
+      .innerJoinAndSelect('profile.admin', 'admin')
+      .where('profile.role = :role', { role: ProfileRoleTypes.ADMIN })
       .addOrderBy(
         'user.createdAt',
         this.configService.get('DEFAULT_SORT_ORDER'),
-      );
+      )
+      .cache(true);
 
-    const config: PaginateConfig<AdminEntity> = {
+    return await paginate(pagination, queryBuilded, {
       defaultLimit: this.configService.get('DEFAULT_LIMIT_PAGINATION'),
-      sortableColumns: ['id'], // Manter apenas colunas simples
-      filterableColumns: {},
-    };
-
-    // return await paginate<AdminEntity>(pagination, query, config);
-    return await this.paginateService.paginateData(
-      pagination,
-      query,
-      ReadAdminDto,
-      config,
-    );
+      sortableColumns: [
+        'id',
+        'name',
+        'email',
+        'createdAt',
+        'updatedAt',
+        'profile.id',
+        'profile.role',
+        'profile.description',
+        'profile.createdAt',
+        'profile.updatedAt',
+        'profile.admin.id',
+      ],
+      filterableColumns: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+        'profile.id': true,
+        'profile.role': true,
+        'profile.description': true,
+        'profile.admin.id': true,
+      },
+    });
   }
 
   findOne(id: number) {

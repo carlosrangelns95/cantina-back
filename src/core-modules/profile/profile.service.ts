@@ -9,7 +9,7 @@ import { CreateResponseDto } from 'src/core/dto/create-response.dto';
 import { ReadProfileDto } from './dto/read-profile.dto';
 import { plainToInstance } from 'class-transformer';
 import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
-import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
+import { PaginatedResponse } from 'src/core/dto/paginated-filter-response.dto';
 import { PaginateQuery } from 'nestjs-paginate';
 import { FilterProfileDto } from './dto/filter-profile.dto';
 import { PaginationService } from 'src/core/pagination/pagination.service';

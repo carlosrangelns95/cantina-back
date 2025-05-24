@@ -4,57 +4,63 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HandleErrors } from '../../core/decorators/error-handler.decorator';
+import { HandleErrors } from 'src/core/decorators/error-handler.decorator';
 import { CreateUserUseCase } from './use-case/create-user.use-case';
 import { ReadUserDto } from './dto/read-user.dto';
 import { plainToInstance } from 'class-transformer';
 import { CreateResponseDto } from 'src/core/dto/create-response.dto';
 import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
-import { hashSync as bcryptHashSync } from 'bcrypt'
+import { hashSync as bcryptHashSync } from 'bcrypt';
 import { FilterUserDto } from './dto/filter-user.dto';
-import { PaginateQuery } from 'nestjs-paginate';
-import { ResponseRequestPaginatedDto } from 'src/core/dto/paginated-filter-response.dto';
+import { paginate, Paginated, PaginateQuery } from 'nestjs-paginate';
+import { PaginatedResponse } from 'src/core/dto/paginated-filter-response.dto';
 import { PaginationService } from 'src/core/pagination/pagination.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
-
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly userUseCase: CreateUserUseCase,
     private readonly paginationService: PaginationService,
-  ) { }
+    private readonly configService: ConfigService,
+  ) {}
 
   @HandleErrors('create user')
   async create(createUserDto: CreateUserDto): Promise<CreateResponseDto> {
-    return await this.userUseCase.execute(createUserDto)
+    return await this.userUseCase.execute(createUserDto);
   }
 
   @HandleErrors('get all users')
-  async findAll(
-    filters: FilterUserDto,
-    pagination: PaginateQuery,
-  ): Promise<ResponseRequestPaginatedDto<ReadUserDto>> {
+  async findAll(filters: FilterUserDto, pagination: PaginateQuery): Promise<Paginated<UserEntity>> {
     const likeFields = ['email', 'name'];
-    const queryBuilded = this.userRepository.createQueryBuilder('user');
 
-    // campos sendo gerados dinamicamente (ex: queryBuilded.andWhere("s.nome LIKE :nome", { nome: "%ana%" });)
+    const queryBuilded = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.profile', 'profile');
+
+    // campos sendo gerados dinamicamente (ex: queryBuilded.andWhere("s.nome LIKE :nome", { nome: "%rangel%" });)
     likeFields.forEach((field) => {
       if (filters[field]) {
-        queryBuilded.andWhere(`u.${field} ILIKE :${field}`, {
-          [field]: `%${filters[field]}%`
-        })
+        queryBuilded.andWhere(`user.${field} LIKE :${field}`, {
+          [field]: `%${filters[field]}%`,
+        });
       }
     });
 
+    queryBuilded.cache(true);
 
-    return await this.paginationService.paginateData(pagination, queryBuilded, likeFields, ReadUserDto);
+    return await paginate(pagination, queryBuilded, {
+      defaultLimit: this.configService.get('DEFAULT_LIMIT_PAGINATION'),
+      sortableColumns: ['id', 'name', 'email', 'profile.role'],
+      searchableColumns: ['id', 'name', 'email', 'profile.role'],
+    });
+
   }
 
   @HandleErrors('get one user')
   async findOne(id: number): Promise<ReadUserDto> {
-
     const user = await this.userRepository.findOneOrFail({ where: { id } });
     const transformed = plainToInstance(ReadUserDto, user, {
       excludeExtraneousValues: true,
@@ -64,7 +70,10 @@ export class UserService {
   }
 
   @HandleErrors('update user')
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResponseDto> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UpdateResponseDto> {
     const user = await this.userRepository.findOneOrFail({ where: { id } });
     const { password } = updateUserDto;
 

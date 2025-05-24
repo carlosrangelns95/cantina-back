@@ -1,22 +1,23 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Expose } from "class-transformer";
+import { Expose, Type } from 'class-transformer';
+import { ReadProfileDto } from 'src/core-modules/profile/dto/read-profile.dto';
 
 export class ReadUserDto {
-
-  @ApiProperty()
   @Expose()
   id: number;
 
-  @ApiProperty()
+  @Expose()
+  name: string;
+
   @Expose()
   email: string;
 
-  @ApiProperty()
   @Expose()
   createdAt: Date;
 
-  @ApiProperty()
   @Expose()
   updatedAt: Date;
 
+  @Expose()
+  @Type(() => ReadProfileDto)
+  profile: ReadProfileDto[];
 }

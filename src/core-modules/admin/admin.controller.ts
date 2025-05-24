@@ -20,10 +20,11 @@ import { FilterUserDto } from '../user/dto/filter-user.dto';
 import { JwtAuthGuard } from 'src/core/auth/guards/jwt-auth-guard';
 import { Request } from 'express';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { HandleErrors } from 'src/core/decorators/error-handler.decorator';
 
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(private readonly adminService: AdminService) { }
 
   @Post()
   @SwaggerDocs(SWAGGER_API_ROUTES.admin.create)
@@ -32,8 +33,9 @@ export class AdminController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('access-token')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth('access-token')
+  @HandleErrors('get all admins')
   findAll(
     @Req() req: Request,
     @Query() filters: FilterUserDto,
