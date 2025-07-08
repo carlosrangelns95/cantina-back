@@ -20,7 +20,7 @@ export async function createAdminSeed(dataSource: DataSource) {
     const profileRepo = queryRunner.manager.getRepository(ProfileEntity);
     const adminRepo = queryRunner.manager.getRepository(AdminEntity);
 
-    const existing = await userRepo.findOneBy({ email: 'carlos.rangel.ns95@gmail.com' });
+    const existing = await userRepo.findOneBy({ email: 'admin@admin.com' });
     if (existing) {
       logger.debug('admin already exists. Skipping seed...');
       await queryRunner.release();
@@ -34,18 +34,14 @@ export async function createAdminSeed(dataSource: DataSource) {
     const profile = await profileRepo.findOneOrFail({ where: { role: ProfileRoleTypes.ADMIN } });
 
     const adminUser = userRepo.create({    
-      name: 'Carlos Rangel Administrator',
-      email: 'carlos.rangel.ns95@gmail.com',
+      name: 'Administrador',
+      email: 'admin@admin.com',
       password_crypt: hashedPassword,
       profiles: [profile],
     });
 
     logger.debug('saving user...');
-    const savedAdmin = await userRepo.save(adminUser);
-
-
-    logger.debug('saving data...');
-    // await adminRepo.save(savedAdmin);
+    await userRepo.save(adminUser);
 
     await queryRunner.commitTransaction();
     logger.debug('seeds executed successfully.');
