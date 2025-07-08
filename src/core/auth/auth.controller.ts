@@ -1,8 +1,10 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Headers, HttpException, HttpStatus, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from 'src/core/auth/dto/AuthResponse.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { SwaggerDocs } from '../swagger/swagger_docs.decorator';
+import { AUTH_SWAGGER_CONFIG } from '../swagger/auth.conf';
 
 @ApiTags('Autenticação')
 @Controller('auth')
@@ -11,12 +13,24 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Faz login' })
+  // @SwaggerDocs(AUTH_SWAGGER_CONFIG.login)
   login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
-    return this.authService.validateUser(loginDto);
+    return this.authService.login(loginDto);
   }
 
-  // @Post('register')
-  // async register(@Body() registerDto: RegisterDto) {
-  //   return this.authService.register(registerDto);
-  // }
+ @Get('/me')
+  async me(@Headers('authorization') authorizationHeader: string) {
+    if (!authorizationHeader) {
+      throw new HttpException('Token de autenticação não fornecido.', HttpStatus.UNAUTHORIZED);
+    }
+
+    // O cabeçalho no formato "Bearer <token>"
+    const [bearer, token] = authorizationHeader.split(' ');
+
+    if (bearer !== 'Bearer' || !token) {
+      throw new HttpException('Formato do token inválido.', HttpStatus.UNAUTHORIZED);
+    }
+
+    return this.authService.me(token); // Passe apenas o token limpo para o service
+  }
 }
