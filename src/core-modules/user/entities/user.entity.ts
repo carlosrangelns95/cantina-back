@@ -1,19 +1,9 @@
 import { ProfileEntity } from 'src/core-modules/profile/entities/profile.entity';
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity } from 'src/core/base.entity';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 @Entity('users')
-export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserEntity extends BaseEntity {
   @Column({ nullable: false })
   name: string;
 
@@ -23,19 +13,20 @@ export class UserEntity {
   @Column({ name: 'password_crypt' })
   password_crypt: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at', nullable: true })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt: Date;
-
-  // um usuário pode ter vários perfis
-  @OneToMany(() => ProfileEntity, (profile) => profile.user, {
+  @ManyToMany(() => ProfileEntity, (profile) => profile.users, {
     cascade: true,
     eager: true,
   })
-  profile: ProfileEntity[];
+  @JoinTable({
+    name: 'users_profiles',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'profile_id',
+      referencedColumnName: 'id',
+    },
+  })
+  profiles: ProfileEntity[];
 }

@@ -53,14 +53,14 @@ export class UserService {
 
     return await paginate(pagination, queryBuilded, {
       defaultLimit: this.configService.get('DEFAULT_LIMIT_PAGINATION'),
-      sortableColumns: ['id', 'name', 'email', 'profile.role'],
-      searchableColumns: ['id', 'name', 'email', 'profile.role'],
+      sortableColumns: ['id', 'name', 'email', ],
+      searchableColumns: ['id', 'name', 'email', ],
     });
 
   }
 
   @HandleErrors('get one user')
-  async findOne(id: number): Promise<ReadUserDto> {
+  async findOne(id: string): Promise<ReadUserDto> {
     const user = await this.userRepository.findOneOrFail({ where: { id } });
     const transformed = plainToInstance(ReadUserDto, user, {
       excludeExtraneousValues: true,
@@ -71,7 +71,7 @@ export class UserService {
 
   @HandleErrors('update user')
   async update(
-    id: number,
+    id: string,
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResponseDto> {
     const user = await this.userRepository.findOneOrFail({ where: { id } });
@@ -92,7 +92,7 @@ export class UserService {
   }
 
   @HandleErrors('remove user')
-  async remove(id: number): Promise<UpdateResponseDto> {
+  async remove(id: string): Promise<UpdateResponseDto> {
     const deleted = await this.userRepository.softDelete(id);
     if (!deleted)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);

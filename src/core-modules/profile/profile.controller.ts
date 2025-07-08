@@ -33,18 +33,18 @@ export class ProfileController {
   // }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<ReadProfileDto> {
+  findOne(@Param('id') id: string): Promise<ReadProfileDto> {
     return this.profileService.findOne(id);
   }
 
   @Patch(':id')
   @SwaggerDocs(SWAGGER_API_ROUTES.profiles.update)
-  update(@Param('id') id: number, @Body() updateProfileDto: UpdateProfileDto): Promise<UpdateResponseDto> {
+  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto): Promise<UpdateResponseDto> {
     return this.profileService.update(id, updateProfileDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<UpdateResponseDto> {
+  remove(@Param('id') id: string): Promise<UpdateResponseDto> {
     return this.profileService.remove(id);
   }
 }

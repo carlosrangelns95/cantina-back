@@ -19,11 +19,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async findUserById(id: number) {
+  async findUserById(id: string) {
     return await this.usersService.findOne(id);
   }
 
-  login(user: { id: number; email: string }) {
+  login(user: { id: string; email: string }) {
     const payload = { sub: user.id, email: user.email };
     return {
       access_token: this.jwtService.sign(payload, {
@@ -46,7 +46,7 @@ export class AuthService {
     const payload = {
       sub: user.id,
       email: user.email,
-      role: user.profile,
+      role: user.profiles,
     };
 
     return {

@@ -27,15 +27,15 @@ export class ProfileService {
 
   async create(createProfileDto: CreateProfileDto): Promise<CreateResponseDto> {
 
-    const { user_id, ...restDto } = createProfileDto;
-    const user = await this.userRepository.findOneOrFail({ where: { id: user_id } });
+    // const { user_id, ...restDto } = createProfileDto;
+    // const user = await this.userRepository.findOneOrFail({ where: { id: user_id } });
 
-    const profile = this.profileRepository.create({
-      ...restDto,
-      user: user,
-    });
+    // const profile = this.profileRepository.create({
+    //   ...restDto,
+    //   users: [user],
+    // });
 
-    const savedProfile = await this.profileRepository.save(profile);
+    const savedProfile = await this.profileRepository.save(createProfileDto);
 
     return {
       id: savedProfile.id,
@@ -72,7 +72,7 @@ export class ProfileService {
   //   return await this.paginationService.paginateData(pagination, queryBuilded, [...likeFields, ...exactFields], ReadProfileDto);
   // }
 
-  async findOne(id: number): Promise<ReadProfileDto> {
+  async findOne(id: string): Promise<ReadProfileDto> {
     const profile = await this.profileRepository.findOne({ where: { id } });
 
     if (!profile)
@@ -85,7 +85,7 @@ export class ProfileService {
     return transformed;
   }
 
-  async update(id: number, updateProfileDto: UpdateProfileDto): Promise<UpdateResponseDto> {
+  async update(id: string, updateProfileDto: UpdateProfileDto): Promise<UpdateResponseDto> {
     const profile = await this.profileRepository.findOneOrFail({ where: { id } });
     const updated = this.profileRepository.merge(profile, updateProfileDto);
     await this.profileRepository.save(updated);
@@ -96,7 +96,7 @@ export class ProfileService {
     };
   }
 
-  async remove(id: number): Promise<UpdateResponseDto> {
+  async remove(id: string): Promise<UpdateResponseDto> {
     const deleted = await this.profileRepository.softDelete(id);
     if (!deleted)
       throw new HttpException('Profile not found', HttpStatus.NOT_FOUND);

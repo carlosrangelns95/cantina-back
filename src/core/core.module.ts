@@ -5,6 +5,8 @@ import { ProfileModule } from '../core-modules/profile/profile.module';
 import { UploadModule } from './upload/upload.module';
 import { AuthModule } from 'src/core/auth/auth.module';
 import { AdminModule } from 'src/core-modules/admin/admin.module';
+import { MessagingModule } from 'src/core/menssaging/messaging.module';
+import { MessageTemplateModule } from './message-template/message-template.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { AdminModule } from 'src/core-modules/admin/admin.module';
     UploadModule,
     AuthModule,
     AdminModule,
+    MessagingModule,
+    MessageTemplateModule,
   ],
   exports: [
     ConnectionModule,

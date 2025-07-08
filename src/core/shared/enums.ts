@@ -1,5 +1,9 @@
 export enum ProfileRoleTypes {
-  USER = 'user',
-  ADMIN = 'admin',
-  SUPER_ADMIN = 'super_admin',
+  ADMIN = 'ADMIN',
+  STUDENT = 'STUDENT',
+  RESPONSABLE = 'RESPONSABLE',
+}
+
+export enum EmailTemplateTypes {
+  TEST = 'TEST',
 }

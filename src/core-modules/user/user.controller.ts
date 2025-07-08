@@ -23,13 +23,14 @@ import { PaginatedResponse } from 'src/core/dto/paginated-filter-response.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBasicAuth } from '@nestjs/swagger';
 import { UserEntity } from 'src/core-modules/user/entities/user.entity';
+import { USER_SWAGGER_CONFIG } from 'src/core/swagger/user.conf';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @SwaggerDocs(SWAGGER_API_ROUTES.users.create)
+  @SwaggerDocs(USER_SWAGGER_CONFIG.create)
   create(@Body() createUserDto: CreateUserDto): Promise<CreateResponseDto> {
     return this.userService.create(createUserDto);
   }
@@ -45,18 +46,18 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<ReadUserDto> {
+  findOne(@Param('id') id: string): Promise<ReadUserDto> {
     return this.userService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @SwaggerDocs(SWAGGER_API_ROUTES.users.remove)
-  remove(@Param('id') id: number): Promise<UpdateResponseDto> {
-    return this.userService.remove(+id);
+  remove(@Param('id') id: string): Promise<UpdateResponseDto> {
+    return this.userService.remove(id);
   }
 }

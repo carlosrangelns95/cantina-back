@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsUUID } from "class-validator";
 import { ProfileRoleTypes } from "src/core/shared/enums";
 
 export class CreateProfileDto {
@@ -13,8 +13,9 @@ export class CreateProfileDto {
   @IsOptional()
   description?: string;
 
-  @ApiProperty({ example: 1 })
-  @IsNotEmpty({ message: 'O campo user_id é obrigatório.' })
-  @IsNumber({}, { message: 'O campo user_id deve conter apenas números.' })
-  user_id: number;
+  // @ApiProperty({ example: 1 })
+  // @IsNotEmpty({ message: 'O campo user_id é obrigatório.' })
+  // @IsUUID()
+  // @IsNumber({}, { message: 'O campo user_id deve conter apenas números.' })
+  // user_id: string;
 }

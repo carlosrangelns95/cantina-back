@@ -7,60 +7,51 @@ import * as bcrypt from 'bcrypt';
 import { ProfileRoleTypes } from 'src/core/shared/enums';
 
 export async function createAdminSeed(dataSource: DataSource) {
-  const logger = new Logger(createAdminSeed.name);
+  const logger = new Logger(createAdminSeed.name, { timestamp: true });
   const queryRunner = dataSource.createQueryRunner();
 
-  logger.debug('Iniciando transaction...');
+  logger.debug('starting transaction...');
   await queryRunner.connect();
   await queryRunner.startTransaction();
 
   try {
-    logger.debug('instanciando repositórios...');
+    logger.debug('instantiating repositories...');
     const userRepo = queryRunner.manager.getRepository(UserEntity);
     const profileRepo = queryRunner.manager.getRepository(ProfileEntity);
     const adminRepo = queryRunner.manager.getRepository(AdminEntity);
 
     const existing = await userRepo.findOneBy({ email: 'carlos.rangel.ns95@gmail.com' });
     if (existing) {
-      logger.debug('Admin já existe. Pulando seed.');
+      logger.debug('admin already exists. Skipping seed...');
       await queryRunner.release();
       return;
     }
 
-    logger.debug('Criptografando senha...');
+    logger.debug('encrypting password...');
     const hashedPassword = await bcrypt.hash('S3nh4@2025', 10);
+    
+    logger.debug('finding admin profile...');
+    const profile = await profileRepo.findOneOrFail({ where: { role: ProfileRoleTypes.ADMIN } });
 
-    const adminUser = userRepo.create({
-      name: 'Super Admin',
+    const adminUser = userRepo.create({    
+      name: 'Carlos Rangel Administrator',
       email: 'carlos.rangel.ns95@gmail.com',
       password_crypt: hashedPassword,
+      profiles: [profile],
     });
 
-    logger.debug('Salvando usuário...');
+    logger.debug('saving user...');
     const savedAdmin = await userRepo.save(adminUser);
 
-    const profile = profileRepo.create({
-      user: savedAdmin,
-      role: ProfileRoleTypes.SUPER_ADMIN,
-      description: 'Super Admin',
-    });
 
-    logger.debug('Salvando perfil...');
-    const savedProfile = await profileRepo.save(profile);
-
-    logger.debug('Definindo roles...');
-    const admin = adminRepo.create({
-      profile: savedProfile,
-    });
-
-    logger.debug('Salvando dados...');
-    await adminRepo.save(admin);
+    logger.debug('saving data...');
+    // await adminRepo.save(savedAdmin);
 
     await queryRunner.commitTransaction();
-    logger.debug('Seeds executadas com sucesso.');
+    logger.debug('seeds executed successfully.');
   } catch (error) {
     await queryRunner.rollbackTransaction();
-    logger.error('Erro ao executar seed:', error);
+    logger.error('error executing seed:', error);
   } finally {
     await queryRunner.release();
   }
