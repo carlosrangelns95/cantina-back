@@ -4,6 +4,15 @@ export enum ProfileRoleTypes {
   RESPONSABLE = 'RESPONSABLE',
 }
 
+export enum ProductCategory {
+  LANCHE = 'LANCHE',
+  BEBIDA = 'BEBIDA',
+  DOCE = 'DOCE',
+  SALGADO = 'SALGADO',
+  FRUTA = 'FRUTA',
+}
+
+
 export enum EmailTemplateTypes {
   TEST = 'TEST',
 }

@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoreModule } from './core/core.module';
 import { MessageTemplateModule } from './core/message-template/message-template.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
-  imports: [CoreModule, MessageTemplateModule],
+  imports: [CoreModule, MessageTemplateModule, ProductModule],
   controllers: [AppController],
   providers: [AppService],
 })
