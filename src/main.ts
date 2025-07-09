@@ -16,6 +16,13 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    // origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   setupSwagger(app);
   await app.listen(process.env.PORT ?? 3000);
   Logger.debug(`server: http://localhost:${process.env.PORT ?? 3000}`);
