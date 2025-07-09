@@ -3,12 +3,12 @@ import { ProductCategory } from "src/core/shared/enums";
 import { Column, Entity } from "typeorm";
 
 @Entity('products')
-export class Product extends BaseEntity {
+export class ProductEntity extends BaseEntity {
 
     @Column({ type: 'varchar', length: 255 })
     name: string;
 
-    @Column({ type: 'number' })
+    @Column({ type: 'float' })
     value: number;
 
     @Column({ type: 'varchar', length: 255 })

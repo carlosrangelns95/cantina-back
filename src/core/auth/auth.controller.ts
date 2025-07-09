@@ -3,8 +3,6 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { AuthResponseDto } from 'src/core/auth/dto/AuthResponse.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { SwaggerDocs } from '../swagger/swagger_docs.decorator';
-import { AUTH_SWAGGER_CONFIG } from '../swagger/auth.conf';
 
 @ApiTags('Autenticação')
 @Controller('auth')
@@ -13,7 +11,6 @@ export class AuthController {
 
   @Post('login')
   @ApiOperation({ summary: 'Faz login' })
-  // @SwaggerDocs(AUTH_SWAGGER_CONFIG.login)
   login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
     return this.authService.login(loginDto);
   }
