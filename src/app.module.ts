@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { CoreModule } from './core/core.module';
 import { MessageTemplateModule } from './core/message-template/message-template.module';
 import { ProductModule } from './modules/product/product.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
-  imports: [CoreModule, MessageTemplateModule, ProductModule],
+  imports: [CoreModule, MessageTemplateModule, ProductModule, OrderModule],
   controllers: [AppController],
   providers: [AppService],
 })
