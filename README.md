@@ -1,5 +1,17 @@
 ## Compile and run the project
 
+ao baixar o projeto primeiro instale as dependencias:
+```bash
+npm install
+```
+
+Após a instalação, execute as seeds para popular o banco com dados iniciais:
+```bash
+npm run seed
+```
+
+Para iniciar o projeto, execute:
+
 ```bash
 # development
 $ npm run start
@@ -35,18 +47,6 @@ $ npm run migration:revert
 - Cloudinary - https://cloudinary.com/
 - bcrypt - https://www.npmjs.com/package/bcrypt
 - jwt - https://www.npmjs.com/package/jsonwebtoken
-
-## To do list:
-
-- Instalar dependências - (typeorm, swagger, nest-config)
-- revisar variaveis
-- conectar o banco de dados
-- abstrair mailer, upload
-- melhorar forma de filtragem (criar utilitario)
-- criar o perfil de users
-- configurar logs
-- atualizar todas as dependencias
-- verificar erros
 
 
 ## para atualizar todas as 
