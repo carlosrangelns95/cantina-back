@@ -1,6 +1,7 @@
 import { ProfileEntity } from 'src/core-modules/profile/entities/profile.entity';
 import { BaseEntity } from 'src/core/base.entity';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { OrderEntity } from 'src/modules/order/entities/order.entity';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
@@ -12,6 +13,12 @@ export class UserEntity extends BaseEntity {
 
   @Column({ name: 'password_crypt' })
   password_crypt: string;
+
+  @Column({ nullable: true })
+  phone: string;
+
+  @OneToMany(() => OrderEntity, Order => Order.user)
+  orders: OrderEntity[];
 
   @ManyToMany(() => ProfileEntity, (profile) => profile.users, {
     cascade: true,

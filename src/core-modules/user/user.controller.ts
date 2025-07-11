@@ -29,7 +29,7 @@ import { USER_SWAGGER_CONFIG } from 'src/core/swagger/user.conf';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('register')
   @SwaggerDocs(USER_SWAGGER_CONFIG.create)
   create(@Body() createUserDto: CreateUserDto): Promise<CreateResponseDto> {
     return this.userService.create(createUserDto);

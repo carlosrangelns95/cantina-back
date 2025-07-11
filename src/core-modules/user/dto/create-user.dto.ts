@@ -1,4 +1,4 @@
-import { IsPassword, IsValidEmail, IsValidName } from "src/core/decorators/dto-validation.decorator";
+import { IsOptionalMobilePhoneNumber, IsPassword, IsValidEmail, IsValidName } from "src/core/decorators/dto-validation.decorator";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum } from "class-validator";
 import { ProfileRoleTypes } from "src/core/shared/enums";
@@ -17,6 +17,9 @@ export class CreateUserDto {
   @IsPassword()
   password: string
 
+  @ApiProperty({ example: '123456789' })
+  @IsOptionalMobilePhoneNumber()
+  phone?: string;
 
   @ApiProperty({ enum: ProfileRoleTypes })
   @IsEnum(ProfileRoleTypes)
