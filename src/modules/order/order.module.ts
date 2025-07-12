@@ -8,6 +8,7 @@ import { OrderItemEntity } from '../order-items/entities/order-item.entity';
 import { AuthModule } from 'src/core/auth/auth.module';
 import { UserEntity } from 'src/core-modules/user/entities/user.entity';
 import { ProductEntity } from '../product/entities/product.entity';
+import { FindAllOrdersUseCase } from './use-cases/find-all-orders.use-case';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { ProductEntity } from '../product/entities/product.entity';
     AuthModule
   ],
   controllers: [OrderController],
-  providers: [OrderService, CreateOrderUseCase],
+  providers: [OrderService, CreateOrderUseCase, FindAllOrdersUseCase],
 })
 export class OrderModule { }

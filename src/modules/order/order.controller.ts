@@ -4,22 +4,22 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { JwtAuthGuard } from 'src/core/auth/guards/jwt-auth-guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) { }
 
-  @UseGuards(JwtAuthGuard)
   @Post('create')
-  async create(@Body() createOrderDto: CreateOrderDto, @Request() req) {
+  create(@Body() createOrderDto: CreateOrderDto, @Request() req: any) {
     const userId = req['user'].userId;
     console.log(`Usuário ${userId} tentando criar um pedido.`);
 
-    return await this.orderService.create(createOrderDto, req);
+    return this.orderService.create(createOrderDto, req);
   }
 
-  @Get()
-  findAll() {
-    return this.orderService.findAll();
+  @Get('my-orders')
+  findAll(@Request() req: any) {
+    return this.orderService.findAll(req);
   }
 
   @Get(':id')
