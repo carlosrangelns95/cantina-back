@@ -5,7 +5,6 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity('orders')
 export class OrderEntity extends BaseEntity {
-
     @OneToMany(() => OrderItemEntity, OrderItem => OrderItem.order)
     orderItems: OrderItemEntity[];
 
@@ -15,4 +14,7 @@ export class OrderEntity extends BaseEntity {
 
     @Column({ name: 'user_id' })
     userId: string;
+
+    @Column()
+    total: number;
 }

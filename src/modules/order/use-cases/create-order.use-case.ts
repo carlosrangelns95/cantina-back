@@ -22,11 +22,19 @@ export class CreateOrderUseCase {
   async execute(data: CreateOrderDto, req: any) {
 
     const user = await this.userRepo.findOneByOrFail({ id: req['user'].userId });
+
+    let total = 0;
+    for (const item of data.items) {
+      const product = await this.productRepo.findOneByOrFail({ id: item.id });
+      total += (item.quantity * product.value);
+    }
+
     let order = this.orderRepo.create({
       user: user,
+      total: total,
     });
-    
-    order =await this.orderRepo.save(order);
+
+    order = await this.orderRepo.save(order);
 
     for (const item of data.items) {
       const product = await this.productRepo.findOneByOrFail({ id: item.id });
