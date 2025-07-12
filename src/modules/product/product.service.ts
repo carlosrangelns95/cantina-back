@@ -6,6 +6,7 @@ import { CreateProductUseCase } from './use-cases/create-product.use-case';
 import { JwtAuthGuard } from 'src/core/auth/guards/jwt-auth-guard';
 import { FindOneProductUseCase } from './use-cases/find-one-product.use-case';
 import { DeleteProductUseCase } from './use-cases/delete-product.use-case';
+import { UpdateProductUseCase } from './use-cases/update-product.use-case';
 
 @UseGuards(JwtAuthGuard)
 @Injectable()
@@ -14,6 +15,7 @@ export class ProductService {
     private readonly createProductUseCase: CreateProductUseCase,
     private readonly findAllProductsUseCase: FindAllProductsUseCase,
     private readonly findOneProductUseCase: FindOneProductUseCase,
+    private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly deleteProductUseCase: DeleteProductUseCase,
   ) { }
 
@@ -29,8 +31,8 @@ export class ProductService {
     return await this.findOneProductUseCase.execute(id);
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+    return await this.updateProductUseCase.execute(id, updateProductDto);
   }
 
   async remove(id: string) {

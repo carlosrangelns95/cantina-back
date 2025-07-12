@@ -13,8 +13,8 @@ export class ProductController {
   }
 
   @Get()
-  async findAll() {
-    return await this.productService.findAll();
+  findAll() {
+    return this.productService.findAll();
   }
 
   @Get(':id')
@@ -24,7 +24,7 @@ export class ProductController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productService.update(+id, updateProductDto);
+    return this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')

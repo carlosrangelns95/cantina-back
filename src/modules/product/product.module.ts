@@ -8,6 +8,7 @@ import { CreateProductUseCase } from './use-cases/create-product.use-case';
 import { UserEntity } from 'src/core-modules/user/entities/user.entity';
 import { FindOneProductUseCase } from './use-cases/find-one-product.use-case';
 import { DeleteProductUseCase } from './use-cases/delete-product.use-case';
+import { UpdateProductUseCase } from './use-cases/update-product.use-case';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ProductEntity, UserEntity])],
@@ -15,8 +16,9 @@ import { DeleteProductUseCase } from './use-cases/delete-product.use-case';
   providers: [
     ProductService,
     CreateProductUseCase,
-    FindAllProductsUseCase,
     FindOneProductUseCase,
+    FindAllProductsUseCase,
+    UpdateProductUseCase,
     DeleteProductUseCase,
   ],
 })
