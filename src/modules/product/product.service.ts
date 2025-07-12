@@ -1,16 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { FindAllProductsUseCase } from './use-cases/find-all-products.use-case';
+import { CreateProductUseCase } from './use-cases/create-product.use-case';
+import { JwtAuthGuard } from 'src/core/auth/guards/jwt-auth-guard';
 
+@UseGuards(JwtAuthGuard)
 @Injectable()
 export class ProductService {
   constructor(
+    private readonly createProductUseCase: CreateProductUseCase,
     private readonly findAllProductsUseCase: FindAllProductsUseCase,
   ) { }
 
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+  async create(createProductDto: CreateProductDto) {
+    return await this.createProductUseCase.execute(createProductDto);
   }
 
   findAll() {

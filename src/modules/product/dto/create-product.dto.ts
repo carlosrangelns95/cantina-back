@@ -10,5 +10,5 @@ export class CreateProductDto {
     value: number;
 
     @IsEnum(ProductCategory)
-    category: string;
+    category: ProductCategory;
 }

@@ -4,10 +4,16 @@ import { ProductController } from './product.controller';
 import { ProductEntity } from './entities/product.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FindAllProductsUseCase } from './use-cases/find-all-products.use-case';
+import { CreateProductUseCase } from './use-cases/create-product.use-case';
+import { UserEntity } from 'src/core-modules/user/entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductEntity])],
+  imports: [TypeOrmModule.forFeature([ProductEntity, UserEntity])],
   controllers: [ProductController],
-  providers: [ProductService, FindAllProductsUseCase],
+  providers: [
+    ProductService,
+    CreateProductUseCase,
+    FindAllProductsUseCase
+  ],
 })
 export class ProductModule { }
