@@ -44,6 +44,7 @@ export class CreateOrderUseCase {
         name: product.name,
         quantity: item.quantity,
         price: product.value,
+        product: product,
       });
 
       await this.orderItemRepo.save(orderItem);
