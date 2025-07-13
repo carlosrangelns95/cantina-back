@@ -6,11 +6,11 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity('orders')
 export class OrderEntity extends BaseEntity {
-    @OneToMany(() => OrderItemEntity, OrderItem => OrderItem.order)
+    @OneToMany(() => OrderItemEntity, OrderItem => OrderItem.order, { eager: true })
     orderItems: OrderItemEntity[];
 
     @JoinColumn({ name: 'user_id' })
-    @ManyToOne(() => UserEntity, User => User.orders)
+    @ManyToOne(() => UserEntity, User => User.orders, { eager: true })
     user: UserEntity;
 
     @Column({ name: 'user_id' })
