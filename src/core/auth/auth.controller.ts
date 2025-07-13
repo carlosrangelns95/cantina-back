@@ -21,13 +21,12 @@ export class AuthController {
       throw new HttpException('Token de autenticação não fornecido.', HttpStatus.UNAUTHORIZED);
     }
 
-    // O cabeçalho no formato "Bearer <token>"
     const [bearer, token] = authorizationHeader.split(' ');
 
     if (bearer !== 'Bearer' || !token) {
       throw new HttpException('Formato do token inválido.', HttpStatus.UNAUTHORIZED);
     }
 
-    return this.authService.me(token); // Passe apenas o token limpo para o service
+    return this.authService.me(token);
   }
 }

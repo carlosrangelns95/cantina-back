@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, Inject } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, Inject, Logger } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import { Request } from 'express';
 import { UserEntity } from 'src/core-modules/user/entities/user.entity';
@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 interface JwtPayload {
-    userId: string;
+    sub: string;
     email: string;
     profile: string;
 
@@ -14,6 +14,7 @@ interface JwtPayload {
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
+    logger = new Logger(JwtAuthGuard.name, { timestamp: true });
     constructor(
         @InjectRepository(UserEntity)
         private readonly userRepo: Repository<UserEntity>,
@@ -35,7 +36,9 @@ export class JwtAuthGuard implements CanActivate {
             }
 
             const payload = jwt.verify(token, secret) as JwtPayload;
-            const user = await this.userRepo.findOneByOrFail({ id: payload.userId });
+            this.logger.debug(`Dados do token descriptografado:  ${JSON.stringify(payload)}`);
+            
+            const user = await this.userRepo.findOneByOrFail({ id: payload.sub });
 
             if (!user) {
                 throw new UnauthorizedException('Usuário associado ao token não encontrado ou inativo.');

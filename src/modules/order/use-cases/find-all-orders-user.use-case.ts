@@ -9,6 +9,7 @@ export class FindAllOrdersByUserUseCase {
   ) { }
 
   async execute(req: any) {
+    console.log(`Usuário ${req['user'].userId} está tentando ver suas ordens.`);
     return await this.orderRepo.find({
       where: {
         userId: req['user'].userId,
