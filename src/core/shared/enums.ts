@@ -5,13 +5,18 @@ export enum ProfileRoleTypes {
 }
 
 export enum ProductCategory {
-  LANCHE = 'LANCHE',
-  BEBIDA = 'BEBIDA',
-  DOCE = 'DOCE',
-  SALGADO = 'SALGADO',
-  FRUTA = 'FRUTA',
+  LANCHE = 'lanche',
+  BEBIDA = 'bebida',
+  DOCE = 'doce',
+  SALGADO = 'salgado',
+  FRUTA = 'fruta',
 }
 
+export enum OrderStatus {
+  PENDING = 'pendente',
+  COMPLETED = 'completo',
+  CANCELLED = 'cancelado',
+}
 
 export enum EmailTemplateTypes {
   TEST = 'TEST',

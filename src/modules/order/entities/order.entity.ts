@@ -1,5 +1,6 @@
 import { UserEntity } from "src/core-modules/user/entities/user.entity";
 import { BaseEntity } from "src/core/base.entity";
+import { OrderStatus } from "src/core/shared/enums";
 import { OrderItemEntity } from "src/modules/order-items/entities/order-item.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
@@ -17,4 +18,7 @@ export class OrderEntity extends BaseEntity {
 
     @Column()
     total: number;
+
+    @Column({ default: OrderStatus.PENDING })
+    status?: string;
 }

@@ -2,15 +2,16 @@ import { Repository } from "typeorm";
 import { OrderEntity } from "../entities/order.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
-export class FindAllOrdersUseCase {
+export class FindOneOrderUseCase {
   constructor(
     @InjectRepository(OrderEntity)
     private readonly orderRepo: Repository<OrderEntity>,
   ) { }
 
-  async execute() {
-    return await this.orderRepo.find({
-      relations: ['orderItems'],
+  async execute(id: string) {
+    return await this.orderRepo.findOneOrFail({
+      where: { id },
+      relations: ['orderItems']
     });
   }
 }

@@ -17,23 +17,28 @@ export class OrderController {
     return this.orderService.create(createOrderDto, req);
   }
 
+  @Get()
+  findAll() {
+    return this.orderService.findAll();
+  }
+
   @Get('my-orders')
-  findAll(@Request() req: any) {
-    return this.orderService.findAll(req);
+  findAllByUser(@Request() req: any) {
+    return this.orderService.findAllByUser(req);
   }
 
-  @Get(':id')
+  @Get('/find/:id')
   findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
+    return this.orderService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
+  @Patch('complete/:id')
+  update(@Param('id') id: string) {
+    return this.orderService.update(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
+    return this.orderService.remove(id);
   }
 }

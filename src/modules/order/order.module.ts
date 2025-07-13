@@ -9,6 +9,10 @@ import { AuthModule } from 'src/core/auth/auth.module';
 import { UserEntity } from 'src/core-modules/user/entities/user.entity';
 import { ProductEntity } from '../product/entities/product.entity';
 import { FindAllOrdersUseCase } from './use-cases/find-all-orders.use-case';
+import { FindAllOrdersByUserUseCase } from './use-cases/find-all-orders-user.use-case';
+import { DeleteOrderUseCase } from './use-cases/delete-order.use-case';
+import { CompleteOrderUseCase } from './use-cases/complete-order.use-case';
+import { FindOneOrderUseCase } from './use-cases/find-one-oder.use-case';
 
 @Module({
   imports: [
@@ -16,6 +20,14 @@ import { FindAllOrdersUseCase } from './use-cases/find-all-orders.use-case';
     AuthModule
   ],
   controllers: [OrderController],
-  providers: [OrderService, CreateOrderUseCase, FindAllOrdersUseCase],
+  providers: [
+    OrderService,
+    CreateOrderUseCase,
+    FindAllOrdersUseCase,
+    FindAllOrdersByUserUseCase,
+    FindOneOrderUseCase,
+    CompleteOrderUseCase,
+    DeleteOrderUseCase,
+  ],
 })
 export class OrderModule { }
