@@ -26,17 +26,9 @@ $ npm run start:prod
 $ docker-compose up -d
 ```
 
-## Migrations
-```bash
-## Criar uma migration:
-$ npm run migration:create -name=nome-da-migration
-
-## Executar as migrations:
-$ npm run migration:run
-
-## Reverter as migrations:
-$ npm run migration:revert
-```  
+Acesso administrativo: 
+email: admin@admin.com
+senha: S3nh4@2025
 
 ## tecnologias utilizadas
 - NestJS - https://nestjs.com/

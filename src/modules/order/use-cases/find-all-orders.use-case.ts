@@ -10,7 +10,7 @@ export class FindAllOrdersUseCase {
 
   async execute() {
     return await this.orderRepo.find({
-      relations: ['orderItems'],
+      relations: ['orderItems', 'orderItems.product'],
     });
   }
 }
