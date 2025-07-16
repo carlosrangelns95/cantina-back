@@ -3,13 +3,10 @@ import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { SwaggerDocs } from '../../core/swagger/swagger_docs.decorator';
-import { SWAGGER_API_ROUTES } from '../../core/swagger/swagger-routes.config';
 import { CreateResponseDto } from 'src/core/dto/create-response.dto';
 import { ReadProfileDto } from './dto/read-profile.dto';
 import { UpdateResponseDto } from 'src/core/dto/update-response.dto';
-import { Paginate, PaginateQuery } from 'nestjs-paginate';
-import { FilterProfileDto } from './dto/filter-profile.dto';
-import { PaginatedResponse } from 'src/core/dto/paginated-filter-response.dto';
+import { PROFILE_SWAGGER_CONFIG } from 'src/core/swagger/profile.conf';
 
 @Controller('profile')
 export class ProfileController {
@@ -18,7 +15,7 @@ export class ProfileController {
   ) { }
 
   @Post()
-  @SwaggerDocs(SWAGGER_API_ROUTES.profiles.create)
+  @SwaggerDocs(PROFILE_SWAGGER_CONFIG.create)
   create(@Body() createProfileDto: CreateProfileDto): Promise<CreateResponseDto> {
     return this.profileService.create(createProfileDto);
   }
@@ -33,17 +30,19 @@ export class ProfileController {
   // }
 
   @Get(':id')
+  @SwaggerDocs(PROFILE_SWAGGER_CONFIG.findOne)
   findOne(@Param('id') id: string): Promise<ReadProfileDto> {
     return this.profileService.findOne(id);
   }
 
   @Patch(':id')
-  @SwaggerDocs(SWAGGER_API_ROUTES.profiles.update)
+  @SwaggerDocs(PROFILE_SWAGGER_CONFIG.update)
   update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto): Promise<UpdateResponseDto> {
     return this.profileService.update(id, updateProfileDto);
   }
 
   @Delete(':id')
+  @SwaggerDocs(PROFILE_SWAGGER_CONFIG.remove)
   remove(@Param('id') id: string): Promise<UpdateResponseDto> {
     return this.profileService.remove(id);
   }

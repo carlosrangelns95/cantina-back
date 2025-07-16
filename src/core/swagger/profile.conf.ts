@@ -4,7 +4,7 @@ import { ReadUserDto } from "src/core-modules/user/dto/read-user.dto";
 import { UpdateUserDto } from "src/core-modules/user/dto/update-user.dto";
 import { UpdateResponseDto } from "../dto/update-response.dto";
 
-export const USER_SWAGGER_CONFIG = {
+export const PROFILE_SWAGGER_CONFIG = {
     create: {
         method: 'post' as const,
         summary: 'Create one user',
