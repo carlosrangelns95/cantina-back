@@ -73,15 +73,15 @@ export class AdminService {
     });
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} admin`;
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
+  update(id: string, updateAdminDto: UpdateAdminDto) {
     return `This action updates a #${id} admin`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} admin`;
   }
 }
